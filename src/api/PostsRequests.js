@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:3001" });
+const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
@@ -14,4 +14,4 @@ API.interceptors.request.use((req) => {
 
 export const getTimelinePosts = (id) => API.get(`/posts/${id}/timeline`);
 export const likePost = (id, userId) =>
-  API.put(`posts/${id}/like`, { userId: userId });
+  API.put(`/posts/${id}/like`, { userId: userId });
