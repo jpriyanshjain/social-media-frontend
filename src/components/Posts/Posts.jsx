@@ -12,6 +12,7 @@ const Posts = () => {
   let { posts, loading } = useSelector((state) => state.postReducer);
   useEffect(() => {
     dispatch(getTimelinePosts(user._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
   if (!posts) return "No Posts";
   if (params.id) posts = posts.filter((post) => post.userId === params.id);

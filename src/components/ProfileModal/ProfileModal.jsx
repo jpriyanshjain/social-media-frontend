@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
-// import "./ProfileModal.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { uploadImage } from "../../actions/UploadAction";
 import { updateUser } from "../../actions/UserAction.js";
 
 const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
-  console.log("data", data);
   const theme = useMantineTheme();
   const { password, ...other } = data;
   const [formData, setFormData] = useState(other);
@@ -15,8 +13,6 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const [coverImage, setCoverImage] = useState(null);
   const dispatch = useDispatch();
   const param = useParams();
-
-  const { user } = useSelector((state) => state.authReducer.authData);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
