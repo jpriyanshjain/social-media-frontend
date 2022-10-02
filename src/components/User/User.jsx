@@ -7,7 +7,7 @@ const User = ({ person }) => {
   const dispatch = useDispatch();
 
   const [following, setFollowing] = useState(
-    person?.following?.includes(user._id)
+    user?.following?.includes(person._id)
   );
   const handleFollow = () => {
     following
