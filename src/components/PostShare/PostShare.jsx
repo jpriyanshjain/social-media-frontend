@@ -58,6 +58,10 @@ const PostShare = () => {
     setImage(null);
     desc.current.value = "";
   };
+
+  const commingSoonHandler = () => {
+    dispatch({ type: "COMING_SOON" });
+  };
   return (
     <div className="PostShare">
       <img
@@ -85,15 +89,27 @@ const PostShare = () => {
             Photo
           </div>
 
-          <div className="option" style={{ color: "var(--video)" }}>
+          <div
+            className="option"
+            style={{ color: "var(--video)" }}
+            onClick={commingSoonHandler}
+          >
             <UilPlayCircle />
             Video
           </div>
-          <div className="option" style={{ color: "var(--location)" }}>
+          <div
+            className="option"
+            style={{ color: "var(--location)" }}
+            onClick={commingSoonHandler}
+          >
             <UilLocationPoint />
             Location
           </div>
-          <div className="option" style={{ color: "var(--shedule)" }}>
+          <div
+            className="option"
+            style={{ color: "var(--shedule)" }}
+            onClick={commingSoonHandler}
+          >
             <UilSchedule />
             Shedule
           </div>

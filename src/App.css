@@ -88,3 +88,8 @@
   height: 2rem;
   align-self: flex-end;
 }
+
+a:-webkit-any-link {
+  color: none;
+  text-decoration: none;
+}
