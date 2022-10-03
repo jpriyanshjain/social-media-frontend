@@ -3,12 +3,14 @@ export const logIn = (formData, navigate) => async (dispatch) => {
   dispatch({ type: "AUTH_START" });
   try {
     const { data } = await AuthApi.logIn(formData);
-    //console.log("data": )
     dispatch({ type: "AUTH_SUCCESS", data: data });
     navigate("../home", { replace: true });
   } catch (error) {
-    console.log(error);
     dispatch({ type: "AUTH_FAIL" });
+    dispatch({
+      type: "ERROR",
+      message: error?.response?.data?.message ?? "error occurred",
+    });
   }
 };
 
@@ -21,6 +23,10 @@ export const signUp = (formData, navigate) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch({ type: "AUTH_FAIL" });
+    dispatch({
+      type: "ERROR",
+      message: error?.response?.data ?? "error occurred",
+    });
   }
 };
 

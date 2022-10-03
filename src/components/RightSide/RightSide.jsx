@@ -6,29 +6,26 @@ import Comment from "../../img/comment.png";
 import { UilSetting } from "@iconscout/react-unicons";
 import TrendCard from "../TrendCard/TrendCard";
 import ShareModal from "../ShareModal/ShareModal";
+import NavIcons from "../NavIcons/NavIcons";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const RightSide = () => {
   const [modalOpened, setModalOpened] = useState(false);
+  const dispatch = useDispatch();
+
+  const comingSoonHandler = () => {
+    dispatch({ type: "COMING_SOON" });
+  };
+
   return (
     <div className="RightSide">
-      <div className="navIcons">
-        <Link to="../home">
-          <img src={Home} alt="" />
-        </Link>
-        <UilSetting />
-        <img src={Noti} alt="" />
-        <Link to="../Chat">
-          <img src={Comment} alt="" />
-        </Link>
-      </div>
-
+      <NavIcons />
       <TrendCard />
 
-      <button className="button r-button" onClick={() => setModalOpened(true)}>
+      <button className="button r-button" onClick={comingSoonHandler}>
         Share
       </button>
-      <ShareModal modalOpened={modalOpened} setModalOpened={setModalOpened} />
     </div>
   );
 };

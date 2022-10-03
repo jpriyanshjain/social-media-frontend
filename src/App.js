@@ -5,6 +5,7 @@ import Auth from "./pages/Auth/Auth";
 import Profile from "./pages/Profile/Profile";
 import { useSelector } from "react-redux";
 import Chat from "./pages/Chat/Chat";
+import Tostify from "./components/Tostify/Tostify";
 
 function App() {
   const user = useSelector((state) => state.authReducer.authData);
@@ -51,6 +52,7 @@ function App() {
           element={user ? <Chat /> : <Navigate to="../auth" />}
         />
       </Routes>
+      <Tostify />
     </div>
   );
 }
