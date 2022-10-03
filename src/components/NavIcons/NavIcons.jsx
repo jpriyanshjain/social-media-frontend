@@ -1,9 +1,5 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-
-import Home from "../../img/home.png";
-import Noti from "../../img/noti.png";
-import Comment from "../../img/comment.png";
 import { UilSetting } from "@iconscout/react-unicons";
 import { Link } from "react-router-dom";
 import { Tooltip } from "@mantine/core";
