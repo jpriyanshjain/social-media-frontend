@@ -9,12 +9,13 @@ const Posts = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authReducer.authData);
-  let { posts, loading } = useSelector((state) => state.postReducer);
+  let { posts, loading, error } = useSelector((state) => state.postReducer);
   useEffect(() => {
-    dispatch(getTimelinePosts(user._id));
+    if (user._id) dispatch(getTimelinePosts(user._id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-  if (!posts) return "No Posts";
+  }, [dispatch, user]);
+
+  if (!posts || error) return "No Posts";
   if (params.id) posts = posts.filter((post) => post.userId === params.id);
   return (
     <div className="Posts">

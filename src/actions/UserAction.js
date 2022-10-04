@@ -1,5 +1,17 @@
 import * as UserApi from "../api/UserRequests";
 
+export const getUser = (id) => async (dispatch) => {
+  try {
+    const { data } = await UserApi.getUser(id);
+    dispatch({ type: "GET_USER", data: data });
+  } catch (error) {
+    dispatch({
+      type: "ERROR",
+      message: error?.response?.data ?? "error occurred",
+    });
+  }
+};
+
 export const updateUser = (id, formData) => async (dispatch) => {
   dispatch({ type: "UPDATING_START" });
   try {

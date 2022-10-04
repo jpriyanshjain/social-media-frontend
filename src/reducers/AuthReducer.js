@@ -16,6 +16,14 @@ const authReducer = (state = initialState, action) => {
     case "AUTH_FAIL":
       return { ...state, loading: false, error: true };
 
+    case "GET_USER":
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        authData: { ...state.authData, user: action?.data },
+      };
+
     case "UPDATING_START":
       return { ...state, updateLoading: true, error: false };
 
