@@ -1,7 +1,7 @@
 const initialState = {
   type: "",
   message: "",
-  display: true,
+  display: false,
 };
 
 const ErrorReducer = (state = initialState, action) => {

@@ -1,22 +1,30 @@
+import { useEffect } from "react";
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Auth from "./pages/Auth/Auth";
 import Profile from "./pages/Profile/Profile";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Chat from "./pages/Chat/Chat";
 import Tostify from "./components/Tostify/Tostify";
+import { getUser } from "./actions/UserAction";
 
 function App() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.authData);
+  useEffect(() => {
+    if (user) {
+      dispatch(getUser(user.user._id));
+    }
+  }, [dispatch]);
+
   return (
     <div
       className="App"
       style={{
-        height:
-          window.location.href === "http://localhost:3000/chat"
-            ? "calc(100vh - 2rem)"
-            : "auto",
+        height: window.location.href.toString().includes("chat")
+          ? "calc(100vh - 2rem)"
+          : "auto",
       }}
     >
       <div className="blur" style={{ top: "-18%", right: "0" }}></div>
