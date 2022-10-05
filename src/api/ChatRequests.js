@@ -12,4 +12,6 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+export const addChat = (senderId, receiverId) =>
+  API.post(`/chat`, { senderId, receiverId });
 export const userChats = (id) => API.get(`/chat/${id}`);
