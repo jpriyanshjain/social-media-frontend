@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatBox from "../../components/ChatBox/ChatBox.jsx";
 import Conversation from "../../components/Coversation/Conversation.jsx";
-import LogoSearch from "../../components/LogoSearch/LogoSearch";
+import UserSearch from "../../components/UserSearch/UserSearch";
 import NavIcons from "../../components/NavIcons/NavIcons.jsx";
 import "./Chat.css";
-import { userChats } from "../../api/ChatRequests";
-import { useSelector } from "react-redux";
+import { userChats, addChat } from "../../api/ChatRequests";
+import { useSelector, useDispatch } from "react-redux";
+import { getFollowUsers } from "../../actions/ChatAction";
 import { io } from "socket.io-client";
 
 const Chat = () => {
+  let dispatch = useDispatch();
   let socket = useRef();
   const { user } = useSelector((state) => state.authReducer.authData);
 
@@ -17,6 +19,7 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [receivedMessage, setReceivedMessage] = useState(null);
+  const [addChatUser, setAddChatUser] = useState(null);
 
   // Get the chat in chat section
   useEffect(() => {
@@ -29,11 +32,13 @@ const Chat = () => {
       }
     };
     getChats();
+    dispatch(getFollowUsers(user._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
 
   // Connect to Socket.io
   useEffect(() => {
-    socket.current = io("http://localhost:8800");
+    socket.current = io(process.env.REACT_APP_SOCKET_URL);
     socket.current.emit("new-user-add", user._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
@@ -54,6 +59,29 @@ const Chat = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const addChatHandler = async () => {
+      if (addChatUser) {
+        const chatMember = chats.find((chat) =>
+          chat.members.includes(addChatUser)
+        );
+        if (!chatMember) {
+          try {
+            const { data } = await addChat(user._id, addChatUser);
+            setChats((perState) => [...perState, data]);
+            setCurrentChat(data);
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          setCurrentChat(chatMember);
+        }
+      }
+    };
+    addChatHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addChatUser]);
+
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user._id);
     const online = onlineUsers.find((user) => user.userId === chatMember);
@@ -64,7 +92,7 @@ const Chat = () => {
     <div className="Chat">
       {/* Left Side */}
       <div className="Left-side-chat">
-        <LogoSearch />
+        <UserSearch setAddChat={setAddChatUser} />
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">

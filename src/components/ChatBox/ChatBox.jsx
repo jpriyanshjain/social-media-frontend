@@ -65,13 +65,12 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
       setMessages([...messages, data]);
       setNewMessage("");
     } catch {
-      console.log("error");
+      console.error("error");
     }
   };
 
   // Receive Message from parent component
   useEffect(() => {
-    console.log("Message Arrived: ", receivedMessage);
     if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
       setMessages([...messages, receivedMessage]);
     }

@@ -34,7 +34,7 @@ const NavIcons = () => {
 
       <Tooltip label="Chat" position="bottom" withArrow>
         <Link to="../chat">
-          <div onClick={comingSoonHandler}>
+          <div>
             <IconMessageCircle />
           </div>
         </Link>

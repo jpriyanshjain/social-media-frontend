@@ -31,7 +31,6 @@ const ErrorReducer = (state = initialState, action) => {
       return {
         ...state,
         display: false,
-        message: action.message,
       };
     default:
       return state;
