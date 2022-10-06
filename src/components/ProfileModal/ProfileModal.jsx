@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { uploadImage } from "../../actions/UploadAction";
-import { updateUser } from "../../actions/UserAction.js";
+import { updateUser } from "../../actions/UserAction";
+import { uploadImage } from "../../api/UploadRequest";
 
 const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   const theme = useMantineTheme();
@@ -27,30 +27,27 @@ const ProfileModal = ({ modalOpened, setModalOpened, data }) => {
   };
 
   // form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let UserData = formData;
     if (profileImage) {
       const data = new FormData();
-      const fileName = Date.now() + profileImage.name;
-      data.append("name", fileName);
-      data.append("file", profileImage);
-      UserData.profilePicture = fileName;
+      data.append("image", profileImage);
       UserData.currentUserId = param.id;
       try {
-        dispatch(uploadImage(data));
+        const { data: imageData } = await uploadImage(data);
+        UserData.profilePicture = imageData.url;
       } catch (err) {
         console.log(err);
       }
     }
     if (coverImage) {
       const data = new FormData();
-      const fileName = Date.now() + coverImage.name;
-      data.append("name", fileName);
+
       data.append("file", coverImage);
-      UserData.coverPicture = fileName;
       try {
-        dispatch(uploadImage(data));
+        const { data: imageData } = await uploadImage(data);
+        UserData.coverPicture = imageData.url;
       } catch (err) {
         console.log(err);
       }
