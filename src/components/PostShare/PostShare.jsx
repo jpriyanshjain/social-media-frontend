@@ -6,7 +6,8 @@ import { UilLocationPoint } from "@iconscout/react-unicons";
 import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImage, uploadPost } from "../../actions/UploadAction.js";
+import { uploadPost } from "../../actions/UploadAction";
+import { uploadImage } from "../../api/UploadRequest";
 
 const PostShare = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,6 @@ const PostShare = () => {
   const loading = useSelector((state) => state.postReducer.uploading);
   const [image, setImage] = useState(null);
   const desc = useRef();
-  const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
   // handle Image Change
   const onImageChange = (event) => {
@@ -39,12 +39,10 @@ const PostShare = () => {
     // if there is an image with post
     if (image) {
       const data = new FormData();
-      const fileName = Date.now() + image.name;
-      data.append("name", fileName);
-      data.append("file", image);
-      newPost.image = fileName;
+      data.append("image", image);
       try {
-        dispatch(uploadImage(data));
+        const { data: imageData } = await uploadImage(data);
+        newPost.image = imageData.url;
       } catch (err) {
         console.log(err);
       }
@@ -64,14 +62,7 @@ const PostShare = () => {
   };
   return (
     <div className="PostShare">
-      <img
-        src={
-          user.profilePicture
-            ? serverPublic + user.profilePicture
-            : serverPublic + "defaultProfile.png"
-        }
-        alt="Profile"
-      />
+      <img src={user.profilePicture} alt="Profile" />
       <div>
         <input
           type="text"
