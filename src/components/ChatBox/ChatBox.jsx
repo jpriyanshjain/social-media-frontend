@@ -120,6 +120,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         ? "message own"
                         : "message"
                     }
+                    key={message._id}
                   >
                     <span>{message.text}</span>{" "}
                     <span>{format(message.createdAt)}</span>

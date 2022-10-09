@@ -8,10 +8,24 @@ import { useSelector, useDispatch } from "react-redux";
 import Chat from "./pages/Chat/Chat";
 import Tostify from "./components/Tostify/Tostify";
 import { getUser } from "./actions/UserAction";
+import { socket } from "./utils/socketIo";
 
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.authData);
+
+  // Connect to Socket.io
+  useEffect(() => {
+    const connectSocket = async () => {
+      if (user?.user._id) {
+        socket.emit("new-user-add", user.user._id);
+      }
+    };
+    connectSocket();
+
+    return () => socket.disconnect();
+  }, [user?.user?._id, dispatch]);
+
   useEffect(() => {
     if (user) {
       dispatch(getUser(user.user._id));
