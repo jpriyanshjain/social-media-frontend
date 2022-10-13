@@ -31,3 +31,15 @@ export const unfollowUser = (id, data) => async (dispatch) => {
   dispatch({ type: "UNFOLLOW_USER", data: id });
   UserApi.unfollowUser(id, data);
 };
+
+export const updateNotification = (id, notification) => async (dispatch) => {
+  try {
+    UserApi.updateNotification(id);
+    dispatch({ type: "UPDATE_NOTIFICATION", data: notification });
+  } catch (error) {
+    dispatch({
+      type: "ERROR",
+      message: error?.response?.data ?? "error occurred",
+    });
+  }
+};

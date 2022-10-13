@@ -1,0 +1,28 @@
+.notification-container {
+  position: relative;
+}
+
+.notification-count {
+  position: absolute;
+  background-color: rgb(249, 57, 57);
+  color: white;
+  border-radius: 50%;
+  top: -21px;
+  right: -26%;
+  padding: 5px;
+  font-size: 8px;
+}
+
+.notification {
+  padding: 5px;
+  border-bottom: 1px solid #00000036;
+  pointer-events: none;
+}
+
+.notification:last-of-type {
+  border: none;
+}
+
+.notification-chat-message {
+  font-size: 14px;
+}

@@ -46,7 +46,15 @@ const Chat = () => {
   useEffect(() => {
     if (sendMessage !== null) {
       socket.emit("send-message", sendMessage);
+      const notificationData = {
+        type: "Message",
+        userId: sendMessage.receiverId,
+        message: sendMessage.text,
+        senderName: user.firstName,
+      };
+      socket.emit("send-notification", notificationData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendMessage]);
 
   //Get the message from socket server
