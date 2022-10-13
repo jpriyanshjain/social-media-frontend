@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatBox from "../../components/ChatBox/ChatBox.jsx";
 import Conversation from "../../components/Coversation/Conversation.jsx";
 import UserSearch from "../../components/UserSearch/UserSearch";
@@ -7,11 +7,10 @@ import "./Chat.css";
 import { userChats, addChat } from "../../api/ChatRequests";
 import { useSelector, useDispatch } from "react-redux";
 import { getFollowUsers } from "../../actions/ChatAction";
-import { io } from "socket.io-client";
+import { socket } from "../../utils/socketIo";
 
 const Chat = () => {
   let dispatch = useDispatch();
-  let socket = useRef();
   const { user } = useSelector((state) => state.authReducer.authData);
 
   const [chats, setChats] = useState([]);
@@ -36,11 +35,9 @@ const Chat = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user._id]);
 
-  // Connect to Socket.io
+  // getting online users
   useEffect(() => {
-    socket.current = io(process.env.REACT_APP_SOCKET_URL);
-    socket.current.emit("new-user-add", user._id);
-    socket.current.on("get-users", (users) => {
+    socket.on("get-users", (users) => {
       setOnlineUsers(users);
     });
   }, [user]);
@@ -48,13 +45,21 @@ const Chat = () => {
   // Send Message to socket server
   useEffect(() => {
     if (sendMessage !== null) {
-      socket.current.emit("send-message", sendMessage);
+      socket.emit("send-message", sendMessage);
+      const notificationData = {
+        type: "Message",
+        userId: sendMessage.receiverId,
+        message: sendMessage.text,
+        senderName: user.firstName,
+      };
+      socket.emit("send-notification", notificationData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendMessage]);
 
   //Get the message from socket server
   useEffect(() => {
-    socket.current.on("recieve-message", (data) => {
+    socket.on("recieve-message", (data) => {
       setReceivedMessage(data);
     });
   }, []);
@@ -101,6 +106,7 @@ const Chat = () => {
                 onClick={() => {
                   setCurrentChat(chat);
                 }}
+                key={chat._id}
               >
                 <Conversation
                   data={chat}

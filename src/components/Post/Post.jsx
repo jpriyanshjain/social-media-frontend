@@ -6,6 +6,7 @@ import Heart from "../../img/like.png";
 import NotLike from "../../img/notlike.png";
 import { likePost } from "../../api/PostsRequests";
 import { useSelector, useDispatch } from "react-redux";
+import { socket } from "../../utils/socketIo";
 
 const Post = ({ data }) => {
   const dispatch = useDispatch();
@@ -15,8 +16,19 @@ const Post = ({ data }) => {
 
   const handleLike = () => {
     likePost(data._id, user._id);
+
     setLiked((prev) => !prev);
-    liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1);
+    if (liked) {
+      setLikes((prev) => prev - 1);
+    } else {
+      const notificationData = {
+        type: "Like",
+        userId: data.userId,
+        senderName: user.firstName,
+      };
+      socket.emit("send-notification", notificationData);
+      setLikes((prev) => prev + 1);
+    }
   };
 
   const comingSoonHandler = () => {

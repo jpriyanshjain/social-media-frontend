@@ -56,6 +56,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
       text: newMessage,
       chatId: chat._id,
     };
+
     const receiverId = chat.members.find((id) => id !== currentUser);
     // send message to socket server
     setSendMessage({ ...message, receiverId });
@@ -71,7 +72,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
 
   // Receive Message from parent component
   useEffect(() => {
-    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+    if (receivedMessage !== null && receivedMessage.chatId === chat?._id) {
       setMessages([...messages, receivedMessage]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,6 +121,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         ? "message own"
                         : "message"
                     }
+                    key={message._id}
                   >
                     <span>{message.text}</span>{" "}
                     <span>{format(message.createdAt)}</span>

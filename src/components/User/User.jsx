@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { followUser, unfollowUser } from "../../actions/UserAction";
+import { socket } from "../../utils/socketIo";
+
 const User = ({ person }) => {
   const { user } = useSelector((state) => state.authReducer.authData);
   const dispatch = useDispatch();
@@ -9,9 +11,16 @@ const User = ({ person }) => {
     user?.following?.includes(person._id)
   );
   const handleFollow = () => {
-    following
-      ? dispatch(unfollowUser(person._id, user))
-      : dispatch(followUser(person._id, user));
+    if (following) dispatch(unfollowUser(person._id, user));
+    else {
+      const notificationData = {
+        type: "Follow",
+        userId: person._id,
+        senderName: user.firstName,
+      };
+      socket.emit("send-notification", notificationData);
+      dispatch(followUser(person._id, user));
+    }
     setFollowing((prev) => !prev);
   };
   return (

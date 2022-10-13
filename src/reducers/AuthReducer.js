@@ -76,7 +76,29 @@ const authReducer = (state = initialState, action) => {
           },
         },
       };
+    case "RECEIVED-NOTIFICATION":
+      return {
+        ...state,
+        authData: {
+          ...state.authData,
+          user: {
+            ...state.authData.user,
+            Notifications: [action.data, ...state.authData.user.Notifications],
+          },
+        },
+      };
 
+    case "UPDATE_NOTIFICATION":
+      return {
+        ...state,
+        authData: {
+          ...state.authData,
+          user: {
+            ...state.authData.user,
+            Notifications: [...action.data],
+          },
+        },
+      };
     default:
       return state;
   }

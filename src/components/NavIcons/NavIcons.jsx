@@ -4,7 +4,8 @@ import { UilSetting } from "@iconscout/react-unicons";
 import { Link } from "react-router-dom";
 import { Tooltip } from "@mantine/core";
 
-import { IconHome, IconBell, IconMessageCircle } from "@tabler/icons";
+import { IconHome, IconMessageCircle } from "@tabler/icons";
+import Notifications from "../Notifications/Notifications";
 
 const NavIcons = () => {
   const dispatch = useDispatch();
@@ -26,19 +27,15 @@ const NavIcons = () => {
         </div>
       </Tooltip>
 
-      <Tooltip label="Notification" position="bottom" withArrow>
-        <div onClick={comingSoonHandler}>
-          <IconBell />
-        </div>
-      </Tooltip>
+      <Notifications />
 
-      <Tooltip label="Chat" position="bottom" withArrow>
-        <Link to="../chat">
+      <Link to="/chat">
+        <Tooltip label="Chat" position="bottom" withArrow>
           <div>
             <IconMessageCircle />
           </div>
-        </Link>
-      </Tooltip>
+        </Tooltip>
+      </Link>
     </div>
   );
 };
