@@ -4,7 +4,7 @@ import { UilSetting } from "@iconscout/react-unicons";
 import { Link } from "react-router-dom";
 import { Tooltip } from "@mantine/core";
 
-import { IconHome, IconBell, IconMessageCircle } from "@tabler/icons";
+import { IconHome, IconMessageCircle } from "@tabler/icons";
 import Notifications from "../Notifications/Notifications";
 
 const NavIcons = () => {
